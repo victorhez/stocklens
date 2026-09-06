@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: stocklens
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_STOCKLENS_DEMO
+        value: "true"
+      - key: NEXT_PUBLIC_BASE_RPC_URL
+        value: https://mainnet.base.org
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5-mini
+      - key: NEXT_PUBLIC_STOCKLENS_REGISTRY_JSON
+        sync: false

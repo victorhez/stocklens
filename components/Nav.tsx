@@ -1,0 +1,6 @@
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { BarChart3, FlaskConical, Settings, Sparkles, ShieldCheck } from 'lucide-react';
+import { Logo } from './Logo'; import { WalletButton } from './WalletButton';
+export function Nav(){const p=usePathname();const items=[['/dashboard','Dashboard',BarChart3],['/simulator','What-If',FlaskConical],['/explain','Explain',Sparkles],['/settings','Settings',Settings]] as const;return <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl"><div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4"><Link href="/"><Logo small/></Link><nav className="hidden md:flex items-center gap-1">{items.map(([href,label,Icon])=><Link key={href} href={href} className={`rounded-xl px-4 py-2 text-sm ${p.startsWith(href)?'bg-white/10 text-white':'text-slate-400 hover:text-white hover:bg-white/5'}`}><span className="flex items-center gap-2"><Icon size={15}/>{label}</span></Link>)}</nav><div className="flex items-center gap-2"><span className="hidden lg:flex items-center gap-2 text-xs text-slate-500"><ShieldCheck size={14} className="text-emerald-400"/>Read-only intelligence</span><WalletButton/></div></div></header>}
