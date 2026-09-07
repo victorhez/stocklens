@@ -13,8 +13,8 @@ export function useLivePositions(fallback: Position[]) {
     {address:a.tokenAddress!,abi:B20_ABI,functionName:'balanceOf' as const,args:[address!] as const},
     {address:a.tokenAddress!,abi:B20_ABI,functionName:'multiplier' as const},
   ]),[address,registry]);
-  const {data,isLoading} = useReadContracts({contracts,query:{enabled}});
-  if(!enabled || !data) return {positions:fallback,isLoading:false,live:false};
+  const {data,isLoading,refetch} = useReadContracts({contracts,query:{enabled}});
+  if(!enabled || !data) return {positions:fallback,isLoading:false,live:false,refresh:refetch};
   const assets=registry.filter(a=>a.tokenAddress);
   const positions:Position[]=assets.map((a,i)=>{
     const rawBig=data[i*2]?.result as bigint|undefined;
@@ -26,5 +26,5 @@ export function useLivePositions(fallback: Position[]) {
     return {...base,...a,rawBalance:raw,multiplier,derivedExposure,valueUsd:base.price?derivedExposure*base.price:undefined,timestamp:new Date().toISOString()};
   });
   const total=positions.reduce((s,p)=>s+(p.valueUsd||0),0);
-  return {positions:positions.map(p=>({...p,portfolioWeight:total?(p.valueUsd||0)/total*100:0})),isLoading,live:true};
+  return {positions:positions.map(p=>({...p,portfolioWeight:total?(p.valueUsd||0)/total*100:0})),isLoading,live:true,refresh:refetch};
 }
